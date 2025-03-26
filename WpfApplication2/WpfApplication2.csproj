@@ -51,6 +51,7 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Properties\Fractal\FractalTreeDrawer.cs" />
         <Compile Include="Properties\SquareObject.cs" />
         <Compile Include="Properties\TriangleObject.cs" />
         <Page Include="MainWindow.xaml">

@@ -21,7 +21,11 @@
                     VerticalAlignment="Center"
                     Grid.Row="1">
             <Button Content="● Точка" Width="100" Margin="5" Click="DrawPoint_Click"/>
+            <Button Content="[] Квадрат" Width="100" Margin="5" Click="Draw_CUB"/>
             <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click"/>
+            <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART"/>
+            <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT"/>
+
         </StackPanel>
     </Grid>
 </Window>

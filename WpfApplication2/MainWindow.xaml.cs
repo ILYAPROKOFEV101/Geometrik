@@ -6,8 +6,10 @@ using System.Windows.Shapes;
 using WPF_Geometric;
 
 using System;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Media;
+using WpfApplication2.Properties.Fractal;
 
 namespace WpfApplication2
 {
@@ -33,6 +35,74 @@ namespace WpfApplication2
             DrawingCanvas.Children.Add(point);
         }
 
+        private void Draw_CUB(object sender, RoutedEventArgs e)
+        {
+            // Генерируем случайную ширину и высоту для квадрата
+            double size = _random.Next(20, 101); // Размер от 20 до 100
+
+            // Создаем квадрат
+            Rectangle square = new Rectangle
+            {
+                Width = size,               // Ширина
+                Height = size,              // Высота (квадрат, поэтому ширина и высота равны)
+                Fill = null,                // Нет заливки (пустой внутри)
+                Stroke = Brushes.Red,       // Цвет рамки - красный
+                StrokeThickness = 2         // Толщина рамки - 2 пикселя
+            };
+
+
+            // Устанавливаем случайную позицию для квадрата
+            SetRandomPosition(square);
+
+            // Добавляем квадрат на Canvas
+            DrawingCanvas.Children.Add(square);
+        }
+        
+
+
+        private void Draw_MyART(object sender, RoutedEventArgs e)
+        {
+            // Генерируем случайные координаты для центра новой фигуры
+            double centerX = _random.Next(50, (int)(DrawingCanvas.ActualWidth - 50));  // Случайная позиция по X
+            double centerY = _random.Next(50, (int)(DrawingCanvas.ActualHeight - 50)); // Случайная позиция по Y
+
+            // Начальный размер первого квадрата
+            double initialSize = _random.Next(100, 200); // Размер первого квадрата (случайный)
+
+            // Рисуем вложенные квадраты с новыми параметрами
+            DrawNestedSquares(centerX, centerY, initialSize, 0);
+        }
+
+        private void DrawNestedSquares(double centerX, double centerY, double size, double rotationAngle)
+        {
+            if (size < 10) return; // Базовый случай: если размер квадрата меньше 10, останавливаем рекурсию
+
+            // Создаем квадрат
+            Rectangle square = new Rectangle
+            {
+                Width = size,
+                Height = size,
+                Stroke = Brushes.Black,       // Цвет рамки
+                StrokeThickness = 2,          // Толщина рамки
+                Fill = Brushes.Transparent    // Прозрачная заливка
+            };
+
+            // Устанавливаем позицию квадрата (по центру Canvas)
+            Canvas.SetLeft(square, centerX - size / 2); // Центрируем по X
+            Canvas.SetTop(square, centerY - size / 2);  // Центрируем по Y
+
+            // Поворачиваем квадрат
+            RotateTransform rotateTransform = new RotateTransform(rotationAngle, size / 2, size / 2);
+            square.RenderTransform = rotateTransform;
+
+            // Добавляем квадрат на Canvas
+            DrawingCanvas.Children.Add(square);
+
+            // Рекурсивно вызываем метод для следующего квадрата
+            DrawNestedSquares(centerX, centerY, size * 0.85, rotationAngle + 10); // Уменьшаем размер и увеличиваем угол поворота
+        }
+        
+        
         private void DrawTriangle_Click(object sender, RoutedEventArgs e)
         {
             // Генерация случайных сторон треугольника
@@ -52,6 +122,24 @@ namespace WpfApplication2
 
             // Отрисовка треугольника
             triangle.Draw(DrawingCanvas);
+        }
+
+
+        private void Draw_FRAT(object sender, RoutedEventArgs e)
+        {
+            // Генерируем случайные координаты для начальной точки дерева
+            double startX = _random.Next(50, (int)(DrawingCanvas.ActualWidth - 50)); // Случайная позиция X
+            double startY = DrawingCanvas.ActualHeight - 50; // Начальная позиция Y (внизу Canvas)
+
+            // Начальные параметры для дерева
+            double length = _random.Next(80, 120); // Случайная начальная длина стебля
+            double angle = -90; // Начальный угол (вверх)
+
+            // Создаем экземпляр класса FractalTreeDrawer
+            FractalTreeDrawer fractalTreeDrawer = new FractalTreeDrawer(DrawingCanvas);
+
+            // Рисуем фрактальное дерево через новый класс
+            fractalTreeDrawer.DrawFractalTree(startX, startY, length, angle, 0);
         }
 
         private void SetRandomPosition(UIElement element)
