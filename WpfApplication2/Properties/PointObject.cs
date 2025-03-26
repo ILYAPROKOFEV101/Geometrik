@@ -5,7 +5,10 @@ using WPF_Geometric;
 
 public class PointObject : GeometricObject
 {
-    public PointObject(int x, int y, Color color) : base(x, y, color) { }
+    public PointObject(int x, int y, Color color) 
+        : base(x, y, Colors.Red) // Игнорируем переданный цвет, всегда используем красный
+    { 
+    }
 
     public override void Draw(Canvas canvas)
     {
@@ -13,7 +16,7 @@ public class PointObject : GeometricObject
         {
             Width = 10,
             Height = 10,
-            Fill = Brush
+            Fill = Brush // Теперь Brush всегда будет красным
         };
 
         Canvas.SetLeft(point, X - 5);

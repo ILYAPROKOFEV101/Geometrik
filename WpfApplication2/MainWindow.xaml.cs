@@ -5,6 +5,10 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using WPF_Geometric;
 
+using System;
+using System.Windows;
+using System.Windows.Media;
+
 namespace WpfApplication2
 {
     public partial class MainWindow : Window
@@ -16,31 +20,13 @@ namespace WpfApplication2
             InitializeComponent();
         }
 
-        private void DrawFigure<T>() where T : GeometricObject
-        {
-            var color = GetRandomColor();
-            int x = _random.Next(0, (int)(DrawingCanvas.ActualWidth - 50));
-            int y = _random.Next(0, (int)(DrawingCanvas.ActualHeight - 50));
-
-            GeometricObject figure;
-            
-            if (typeof(T) == typeof(SquareObject))
-                figure = new SquareObject(x, y, color);
-            else if (typeof(T) == typeof(TriangleObject))
-                figure = new TriangleObject(x, y, color);
-            else
-                figure = new PointObject(x, y, color);
-
-            figure.Draw(DrawingCanvas);
-        }
-
         private void DrawPoint_Click(object sender, RoutedEventArgs e)
         {
             var point = new Ellipse
             {
                 Width = 4,
                 Height = 4,
-                Fill = new SolidColorBrush(GetRandomColor())
+                Fill = Brushes.Red // Фиксированный красный цвет вместо случайного
             };
 
             SetRandomPosition(point);
@@ -49,39 +35,30 @@ namespace WpfApplication2
 
         private void DrawTriangle_Click(object sender, RoutedEventArgs e)
         {
-            if (DrawingCanvas.ActualWidth == 0 || DrawingCanvas.ActualHeight == 0)
-                return;
+            // Генерация случайных сторон треугольника
+            double a = _random.Next(50, 200);
+            double b = _random.Next(50, 200);
+            double c = _random.Next(50, 200);
 
-            // Генерируем три случайные точки в пределах Canvas
-            Point p1 = new Point(
-                _random.Next(0, (int)DrawingCanvas.ActualWidth),
-                _random.Next(0, (int)DrawingCanvas.ActualHeight)
-            );
-            Point p2 = new Point(
-                _random.Next(0, (int)DrawingCanvas.ActualWidth),
-                _random.Next(0, (int)DrawingCanvas.ActualHeight)
-            );
-            Point p3 = new Point(
-                _random.Next(0, (int)DrawingCanvas.ActualWidth),
-                _random.Next(0, (int)DrawingCanvas.ActualHeight)
-            );
+            // Генерация случайной позиции
+            double x = _random.Next(0, (int)(DrawingCanvas.ActualWidth - 50));
+            double y = _random.Next(0, (int)(DrawingCanvas.ActualHeight - 50));
 
-            var triangle = new Polygon
-            {
-                Points = new PointCollection { p1, p2, p3 },
-                Stroke = Brushes.Red,
-                StrokeThickness = 2,
-                Fill = Brushes.Transparent // Прозрачная заливка
-            };
+            // Фиксированный красный цвет
+            Brush brush = Brushes.Red;
 
-            DrawingCanvas.Children.Add(triangle);
+            // Создание треугольника
+            Triangle triangle = new Triangle(x, y, brush, a, b, c);
+
+            // Отрисовка треугольника
+            triangle.Draw(DrawingCanvas);
         }
 
         private void SetRandomPosition(UIElement element)
         {
             double x = _random.Next(0, (int)(DrawingCanvas.ActualWidth - 50));
             double y = _random.Next(0, (int)(DrawingCanvas.ActualHeight - 50));
-            
+
             Canvas.SetLeft(element, x);
             Canvas.SetTop(element, y);
         }
