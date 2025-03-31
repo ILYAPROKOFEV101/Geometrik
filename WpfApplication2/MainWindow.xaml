@@ -25,6 +25,8 @@
             <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click"/>
             <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART"/>
             <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT"/>
+            <Button Content="Очистить" Width="100" Margin="5" Click="ClearCanvas_Click"/>
+
 
         </StackPanel>
     </Grid>

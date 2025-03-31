@@ -142,6 +142,12 @@ namespace WpfApplication2
             fractalTreeDrawer.DrawFractalTree(startX, startY, length, angle, 0);
         }
 
+        
+        private void ClearCanvas_Click(object sender, RoutedEventArgs e)
+        {
+            // Очищаем все дочерние элементы Canvas
+            DrawingCanvas.Children.Clear();
+        }
         private void SetRandomPosition(UIElement element)
         {
             double x = _random.Next(0, (int)(DrawingCanvas.ActualWidth - 50));
