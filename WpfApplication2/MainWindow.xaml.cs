@@ -105,25 +105,39 @@ namespace WpfApplication2
         
         private void DrawTriangle_Click(object sender, RoutedEventArgs e)
         {
-            // Генерация случайных сторон треугольника
-            double a = _random.Next(50, 200);
-            double b = _random.Next(50, 200);
-            double c = _random.Next(50, 200);
+            // Проверка и получение значений из текстовых полей
+            if (double.TryParse(InputX.Text, out double x) &&
+                double.TryParse(InputY.Text, out double y) &&
+                double.TryParse(InputSideA.Text, out double sideA) &&
+                double.TryParse(InputSideB.Text, out double sideB) &&
+                double.TryParse(InputSideC.Text, out double sideC))
+            {
+                // Проверка корректности длин сторон треугольника
+                if (sideA <= 0 || sideB <= 0 || sideC <= 0)
+                {
+                    MessageBox.Show("Длины сторон должны быть положительными числами.");
+                    return;
+                }
 
-            // Генерация случайной позиции
-            double x = _random.Next(0, (int)(DrawingCanvas.ActualWidth - 50));
-            double y = _random.Next(0, (int)(DrawingCanvas.ActualHeight - 50));
+                if (sideA + sideB <= sideC || sideA + sideC <= sideB || sideB + sideC <= sideA)
+                {
+                    MessageBox.Show("Треугольник с такими сторонами не может существовать.");
+                    return;
+                }
 
-            // Фиксированный красный цвет
-            Brush brush = Brushes.Red;
+                // Создание треугольника с заданными параметрами
+                Brush brush = Brushes.Red; // Фиксированный цвет
 
-            // Создание треугольника
-            Triangle triangle = new Triangle(x, y, brush, a, b, c);
+                Triangle triangle = new Triangle(x, y, brush, sideA, sideB, sideC);
 
-            // Отрисовка треугольника
-            triangle.Draw(DrawingCanvas);
+                // Отрисовка треугольника
+                triangle.Draw(DrawingCanvas);
+            }
+            else
+            {
+                MessageBox.Show("Введите корректные числовые значения для координат и длин сторон.");
+            }
         }
-
 
         private void Draw_FRAT(object sender, RoutedEventArgs e)
         {

@@ -6,7 +6,7 @@ using WPF_Geometric;
 public class PointObject : GeometricObject
 {
     public PointObject(int x, int y, Color color) 
-        : base(x, y, Colors.Red) // Игнорируем переданный цвет, всегда используем красный
+        : base(x, y, Colors.Red) 
     { 
     }
 

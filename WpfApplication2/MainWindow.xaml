@@ -5,29 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="450" Width="525">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <!-- Область для рисования -->
         <Canvas x:Name="DrawingCanvas" Background="White" Grid.Row="0"/>
 
+        <!-- Панель для ввода данных -->
+        <StackPanel Orientation="Vertical" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Grid.Row="1">
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="X:" VerticalAlignment="Center" Margin="5,0"/>
+                <TextBox x:Name="InputX" Width="50" Height="25" Margin="5,0"/>
+                <TextBlock Text="Y:" VerticalAlignment="Center" Margin="5,0"/>
+                <TextBox x:Name="InputY" Width="50" Height="25" Margin="5,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <TextBlock Text="Сторона A:" VerticalAlignment="Center" Margin="5,0"/>
+                <TextBox x:Name="InputSideA" Width="50" Height="25" Margin="5,0"/>
+                <TextBlock Text="Сторона B:" VerticalAlignment="Center" Margin="5,0"/>
+                <TextBox x:Name="InputSideB" Width="50" Height="25" Margin="5,0"/>
+                <TextBlock Text="Сторона C:" VerticalAlignment="Center" Margin="5,0"/>
+                <TextBox x:Name="InputSideC" Width="50" Height="25" Margin="5,0"/>
+            </StackPanel>
+        </StackPanel>
+
         <!-- Панель с кнопками -->
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center"
-                    Grid.Row="1">
+                    Grid.Row="2">
             <Button Content="● Точка" Width="100" Margin="5" Click="DrawPoint_Click"/>
             <Button Content="[] Квадрат" Width="100" Margin="5" Click="Draw_CUB"/>
             <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click"/>
             <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART"/>
             <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT"/>
             <Button Content="Очистить" Width="100" Margin="5" Click="ClearCanvas_Click"/>
-
-
         </StackPanel>
     </Grid>
 </Window>
