@@ -9,7 +9,9 @@ using System;
 using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Media;
+using WpfApplication2.Properties;
 using WpfApplication2.Properties.Fractal;
+using WpfApplication2.Properties.Myart;
 
 namespace WpfApplication2
 {
@@ -20,8 +22,124 @@ namespace WpfApplication2
         public MainWindow()
         {
             InitializeComponent();
+            
+            // Подписываемся на событие Loaded
+            this.Loaded += Window_Loaded;
+
+            // Подписываемся на событие изменения размера окна
+            this.SizeChanged += Window_SizeChanged;
+        }
+        
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Пересоздаем разметку при изменении размера окна
+            CreateRuler();
+        }
+        
+        
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Создаем разметку после загрузки окна
+            CreateRuler();
+        }
+        private void CreateRuler()
+        {
+            // Очищаем предыдущие линии разметки
+            RulerCanvas.Children.Clear();
+
+            // Получаем размеры DrawingCanvas
+            double canvasWidth = DrawingCanvas.ActualWidth;
+            double canvasHeight = DrawingCanvas.ActualHeight;
+
+            // Шаг между линиями
+            double step = 20;
+
+            // Создаем горизонтальные линии
+            for (double y = 0; y <= canvasHeight; y += step)
+            {
+                Line horizontalLine = new Line
+                {
+                    X1 = 0,
+                    Y1 = y,
+                    X2 = canvasWidth,
+                    Y2 = y,
+                    Stroke = Brushes.Black, // Цвет линий
+                    StrokeThickness = 1     // Толщина линий
+                };
+                RulerCanvas.Children.Add(horizontalLine);
+            }
+
+            // Создаем вертикальные линии
+            for (double x = 0; x <= canvasWidth; x += step)
+            {
+                Line verticalLine = new Line
+                {
+                    X1 = x,
+                    Y1 = 0,
+                    X2 = x,
+                    Y2 = canvasHeight,
+                    Stroke = Brushes.Black, // Цвет линий
+                    StrokeThickness = 1     // Толщина линий
+                };
+                RulerCanvas.Children.Add(verticalLine);
+            }
+
+            // Отладочный вывод
+            Console.WriteLine($"Canvas size: {canvasWidth}x{canvasHeight}");
+            Console.WriteLine($"Added {RulerCanvas.Children.Count} lines to RulerCanvas.");
+        }
+        
+        
+        private SolidColorBrush selectedColorBrush;
+
+        private void ColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = ColorComboBox.SelectedItem as ComboBoxItem;
+
+            if (selectedItem != null)
+            {
+                string colorName = selectedItem.Tag.ToString();
+                switch (colorName)
+                {
+                    case "Red":
+                        selectedColorBrush = new SolidColorBrush(Colors.Red);
+                        break;
+                    case "Blue":
+                        selectedColorBrush = new SolidColorBrush(Colors.Blue);
+                        break;
+                    case "Green":
+                        selectedColorBrush = new SolidColorBrush(Colors.Green);
+                        break;
+                    default:
+                        selectedColorBrush = new SolidColorBrush(Colors.Black);
+                        break;
+                }
+            }
         }
 
+ 
+        private void DrawNewArt_Click(object sender, RoutedEventArgs e)
+        {
+            // Проверяем, выбран ли цвет
+            if (selectedColorBrush == null)
+            {
+                MessageBox.Show("Выберите цвет перед рисованием.");
+                return;
+            }
+
+            // Создаем новый квадрат
+            MySquare mySquare = new MySquare(
+                x: new Random().Next(10, 400), // Случайная позиция X
+                y: new Random().Next(10, 200), // Случайная позиция Y
+                colorName: selectedColorBrush.Color.ToString(), // Выбранный цвет
+                sideLength: 120 // Длина стороны
+            );
+
+            // Рисуем квадрат с уникальным внутренним рисунком
+            mySquare.Draw(DrawingCanvas);
+        }
+        
+        
         private void DrawPoint_Click(object sender, RoutedEventArgs e)
         {
             var point = new Ellipse
@@ -58,50 +176,16 @@ namespace WpfApplication2
             DrawingCanvas.Children.Add(square);
         }
         
-
-
+        
         private void Draw_MyART(object sender, RoutedEventArgs e)
         {
-            // Генерируем случайные координаты для центра новой фигуры
-            double centerX = _random.Next(50, (int)(DrawingCanvas.ActualWidth - 50));  // Случайная позиция по X
-            double centerY = _random.Next(50, (int)(DrawingCanvas.ActualHeight - 50)); // Случайная позиция по Y
+            // Создаем экземпляр класса ArtDrawer
+            ArtDrawer artDrawer = new ArtDrawer();
 
-            // Начальный размер первого квадрата
-            double initialSize = _random.Next(100, 200); // Размер первого квадрата (случайный)
-
-            // Рисуем вложенные квадраты с новыми параметрами
-            DrawNestedSquares(centerX, centerY, initialSize, 0);
+            // Вызываем метод для рисования
+            artDrawer.DrawRandomArt(DrawingCanvas);
         }
 
-        private void DrawNestedSquares(double centerX, double centerY, double size, double rotationAngle)
-        {
-            if (size < 10) return; // Базовый случай: если размер квадрата меньше 10, останавливаем рекурсию
-
-            // Создаем квадрат
-            Rectangle square = new Rectangle
-            {
-                Width = size,
-                Height = size,
-                Stroke = Brushes.Black,       // Цвет рамки
-                StrokeThickness = 2,          // Толщина рамки
-                Fill = Brushes.Transparent    // Прозрачная заливка
-            };
-
-            // Устанавливаем позицию квадрата (по центру Canvas)
-            Canvas.SetLeft(square, centerX - size / 2); // Центрируем по X
-            Canvas.SetTop(square, centerY - size / 2);  // Центрируем по Y
-
-            // Поворачиваем квадрат
-            RotateTransform rotateTransform = new RotateTransform(rotationAngle, size / 2, size / 2);
-            square.RenderTransform = rotateTransform;
-
-            // Добавляем квадрат на Canvas
-            DrawingCanvas.Children.Add(square);
-
-            // Рекурсивно вызываем метод для следующего квадрата
-            DrawNestedSquares(centerX, centerY, size * 0.85, rotationAngle + 10); // Уменьшаем размер и увеличиваем угол поворота
-        }
-        
         
         private void DrawTriangle_Click(object sender, RoutedEventArgs e)
         {
@@ -162,6 +246,8 @@ namespace WpfApplication2
             // Очищаем все дочерние элементы Canvas
             DrawingCanvas.Children.Clear();
         }
+        
+        
         private void SetRandomPosition(UIElement element)
         {
             double x = _random.Next(0, (int)(DrawingCanvas.ActualWidth - 50));

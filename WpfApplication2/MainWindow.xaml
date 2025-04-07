@@ -7,47 +7,70 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="525">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
+        <!-- Добавляем DockPanel для размещения ComboBox в правом верхнем углу -->
+        <DockPanel LastChildFill="True">
+            <!-- Комбо-бокс с выбором цвета -->
+            <ComboBox x:Name="ColorComboBox" 
+                      HorizontalAlignment="Right" 
+                      VerticalAlignment="Top" 
+                      SelectedIndex="0"
+                      Width="100" 
+                      Margin="10" 
+                      SelectionChanged="ColorComboBox_SelectionChanged">
+                <ComboBoxItem Content="Красный" Background="Red" Tag="Red"/>
+                <ComboBoxItem Content="Синий" Background="Blue" Tag="Blue"/>
+                <ComboBoxItem Content="Зеленый" Background="Green" Tag="Green"/>
+            </ComboBox>
 
-        <!-- Область для рисования -->
-        <Canvas x:Name="DrawingCanvas" Background="White" Grid.Row="0"/>
+            <!-- Основная сетка -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
 
-        <!-- Панель для ввода данных -->
-        <StackPanel Orientation="Vertical" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"
-                    Grid.Row="1">
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <TextBlock Text="X:" VerticalAlignment="Center" Margin="5,0"/>
-                <TextBox x:Name="InputX" Width="50" Height="25" Margin="5,0"/>
-                <TextBlock Text="Y:" VerticalAlignment="Center" Margin="5,0"/>
-                <TextBox x:Name="InputY" Width="50" Height="25" Margin="5,0"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0,5">
-                <TextBlock Text="Сторона A:" VerticalAlignment="Center" Margin="5,0"/>
-                <TextBox x:Name="InputSideA" Width="50" Height="25" Margin="5,0"/>
-                <TextBlock Text="Сторона B:" VerticalAlignment="Center" Margin="5,0"/>
-                <TextBox x:Name="InputSideB" Width="50" Height="25" Margin="5,0"/>
-                <TextBlock Text="Сторона C:" VerticalAlignment="Center" Margin="5,0"/>
-                <TextBox x:Name="InputSideC" Width="50" Height="25" Margin="5,0"/>
-            </StackPanel>
-        </StackPanel>
+                <!-- Разметка (линейка) -->
+                <Canvas x:Name="RulerCanvas" Background="Blue" Grid.Row="0"/>
 
-        <!-- Панель с кнопками -->
-        <StackPanel Orientation="Horizontal" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"
-                    Grid.Row="2">
-            <Button Content="● Точка" Width="100" Margin="5" Click="DrawPoint_Click"/>
-            <Button Content="[] Квадрат" Width="100" Margin="5" Click="Draw_CUB"/>
-            <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click"/>
-            <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART"/>
-            <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT"/>
-            <Button Content="Очистить" Width="100" Margin="5" Click="ClearCanvas_Click"/>
-        </StackPanel>
+                <!-- Область для рисования -->
+                <Canvas x:Name="DrawingCanvas" Background="White" Grid.Row="0"/>
+
+                <!-- Панель для ввода данных -->
+                <StackPanel Orientation="Vertical" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Grid.Row="1">
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <TextBlock Text="X:" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBox x:Name="InputX" Width="50" Height="25" Margin="5,0"/>
+                        <TextBlock Text="Y:" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBox x:Name="InputY" Width="50" Height="25" Margin="5,0"/>
+                        <TextBlock Text="Сторона A:" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBox x:Name="InputSideA" Width="50" Height="25" Margin="5,0"/>
+                        <TextBlock Text="Сторона B:" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBox x:Name="InputSideB" Width="50" Height="25" Margin="5,0"/>
+                        <TextBlock Text="Сторона C:" VerticalAlignment="Center" Margin="5,0"/>
+                        <TextBox x:Name="InputSideC" Width="50" Height="25" Margin="5,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Панель с кнопками -->
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Grid.Row="2">
+                    <Button Content="● Точка" Width="100" Margin="5" Click="DrawPoint_Click"/>
+                    <Button Content="[] Квадрат" Width="100" Margin="5" Click="Draw_CUB"/>
+                    <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click"/>
+                    <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART"/>
+                    <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT"/>
+                    <Button Content="Очистить" Width="100" Margin="5" Click="ClearCanvas_Click"/>   
+                    <Button Content="Новый рисунок" Width="100" Margin="5" Click="DrawNewArt_Click"/>
+
+                </StackPanel>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>
