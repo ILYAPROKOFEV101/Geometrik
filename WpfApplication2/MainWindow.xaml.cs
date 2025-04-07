@@ -132,10 +132,10 @@ namespace WpfApplication2
                 x: new Random().Next(10, 400), // Случайная позиция X
                 y: new Random().Next(10, 200), // Случайная позиция Y
                 colorName: selectedColorBrush.Color.ToString(), // Выбранный цвет
-                sideLength: 120 // Длина стороны
+                sideLength: 150 // Длина стороны
             );
 
-            // Рисуем квадрат с уникальным внутренним рисунком
+            // Рисуем квадрат с фракталом
             mySquare.Draw(DrawingCanvas);
         }
         

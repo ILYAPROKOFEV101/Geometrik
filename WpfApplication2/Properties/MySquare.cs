@@ -13,7 +13,7 @@ namespace WpfApplication2.Properties
     public MySquare() : base()
     {
         SetColor("Purple"); // Устанавливаем цвет по умолчанию
-        SideLength = 80; // Устанавливаем длину стороны по умолчанию
+        SideLength = 150; // Устанавливаем длину стороны по умолчанию
     }
 
     // Конструктор с параметрами
@@ -22,7 +22,7 @@ namespace WpfApplication2.Properties
     {
     }
 
-    // Переопределение метода Draw для добавления уникального рисунка
+    // Переопределение метода Draw для добавления фрактала
     public override void Draw(Canvas canvas)
     {
         if (canvas == null)
@@ -47,96 +47,39 @@ namespace WpfApplication2.Properties
         // Добавляем квадрат на Canvas
         canvas.Children.Add(square);
 
-        // Рисуем уникальный внутренний рисунок
-        DrawUniqueInnerArt(canvas, X, (int)(TransformYCoordinate(Y) - SideLength), SideLength);
+        // Рисуем фрактал
+        DrawFractal(canvas, X, (int)(TransformYCoordinate(Y) - SideLength), SideLength, 4);
     }
 
-    // Метод для рисования уникального внутреннего рисунка
-    private void DrawUniqueInnerArt(Canvas canvas, int x, int y, int sideLength)
+    // Метод для рисования фрактала
+    private void DrawFractal(Canvas canvas, int x, int y, int size, int depth)
     {
-        // Создаем круг в центре квадрата
-        Ellipse circle = new Ellipse
+        if (depth == 0)
         {
-            Width = sideLength / 3,
-            Height = sideLength / 3,
-            Fill = new RadialGradientBrush(Colors.Yellow, Colors.Orange) // Градиентный круг
-        };
-
-        Canvas.SetLeft(circle, x + sideLength / 3); // Центр круга по X
-        Canvas.SetTop(circle, y + sideLength / 3); // Центр круга по Y
-
-        canvas.Children.Add(circle);
-
-        // Создаем звезду в центре квадрата
-        Path star = CreateStar(x + sideLength / 2, y + sideLength / 2, sideLength / 4, 5);
-        canvas.Children.Add(star);
-
-        // Создаем спираль из линий
-        DrawSpiral(canvas, x, y, sideLength);
-    }
-
-    // Метод для создания звезды
-    private Path CreateStar(double centerX, double centerY, double radius, int points)
-    {
-        PathGeometry starGeometry = new PathGeometry();
-        PathFigure figure = new PathFigure();
-
-        double angleStep = Math.PI / points;
-        PointCollection pointsCollection = new PointCollection();
-
-        for (int i = 0; i < points * 2; i++)
-        {
-            double length = (i % 2 == 0) ? radius : radius / 2;
-            double angle = i * angleStep;
-            double x = centerX + length * Math.Cos(angle);
-            double y = centerY + length * Math.Sin(angle);
-            pointsCollection.Add(new Point(x, y));
+            return; // Базовый случай: прекращаем рекурсию
         }
 
-        figure.StartPoint = pointsCollection[0];
-        figure.Segments.Add(new PolyLineSegment(pointsCollection.Skip(1).ToList(), true));
-        starGeometry.Figures.Add(figure);
-
-        Path star = new Path
+        // Рисуем текущий квадрат
+        Rectangle fractalSquare = new Rectangle
         {
-            Data = starGeometry,
-            Fill = Brushes.Gold,
-            Stroke = Brushes.Black,
+            Width = size,
+            Height = size,
+            Fill = Brushes.Transparent, // Прозрачный фон
+            Stroke = Brush, // Граница квадрата
             StrokeThickness = 1
         };
 
-        return star;
-    }
+        Canvas.SetLeft(fractalSquare, x);
+        Canvas.SetTop(fractalSquare, y);
 
-    // Метод для рисования спирали
-    private void DrawSpiral(Canvas canvas, int x, int y, int sideLength)
-    {
-        int steps = 50;
-        double angleStep = Math.PI / 10;
-        double radiusStep = sideLength / (double)steps;
+        canvas.Children.Add(fractalSquare);
 
-        for (int i = 0; i < steps; i++)
-        {
-            double angle = i * angleStep;
-            double radius = i * radiusStep;
-
-            double startX = x + radius * Math.Cos(angle);
-            double startY = y + radius * Math.Sin(angle);
-            double endX = x + (radius + radiusStep) * Math.Cos(angle + angleStep);
-            double endY = y + (radius + radiusStep) * Math.Sin(angle + angleStep);
-
-            Line line = new Line
-            {
-                X1 = startX,
-                Y1 = startY,
-                X2 = endX,
-                Y2 = endY,
-                Stroke = Brushes.Cyan,
-                StrokeThickness = 1
-            };
-
-            canvas.Children.Add(line);
-        }
+        // Рекурсивно рисуем 4 меньших квадрата
+        int newSize = size / 3; // Размер следующего уровня фрактала
+        DrawFractal(canvas, x + newSize, y, newSize, depth - 1);                    // Верхний центральный квадрат
+        DrawFractal(canvas, x, y + newSize, newSize, depth - 1);                    // Левый центральный квадрат
+        DrawFractal(canvas, x + newSize * 2, y + newSize, newSize, depth - 1);      // Правый центральный квадрат
+        DrawFractal(canvas, x + newSize, y + newSize * 2, newSize, depth - 1);      // Нижний центральный квадрат
     }
 }
 }
