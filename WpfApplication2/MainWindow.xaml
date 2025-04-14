@@ -6,10 +6,55 @@
         xmlns:local="clr-namespace:WpfApplication2"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="525">
+    <Window.Resources>
+        <!-- Стиль для кнопок -->
+        <Style x:Key="CustomButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Gray"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="DarkGray"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопок выбора UI -->
+        <Style x:Key="UIStyleButtonStyle" TargetType="Button" BasedOn="{StaticResource CustomButtonStyle}">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <!-- Добавляем DockPanel для размещения ComboBox в правом верхнем углу -->
+        <!-- Добавляем DockPanel для размещения ComboBox и кнопок выбора UI -->
         <DockPanel LastChildFill="True">
             <!-- Комбо-бокс с выбором цвета -->
+            <StackPanel Orientation="Vertical" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top" 
+                        Margin="10">
             <ComboBox x:Name="ColorComboBox" 
                       HorizontalAlignment="Right" 
                       VerticalAlignment="Top" 
@@ -21,6 +66,14 @@
                 <ComboBoxItem Content="Синий" Background="Blue" Tag="Blue"/>
                 <ComboBoxItem Content="Зеленый" Background="Green" Tag="Green"/>
             </ComboBox>
+
+            <!-- Панель с кнопками выбора стиля UI -->
+            
+                <Button Content="Стиль 1" Style="{StaticResource UIStyleButtonStyle}" Click="ApplyStyle1_Click"/>
+                <Button Content="Стиль 2" Style="{StaticResource UIStyleButtonStyle}" Click="ApplyStyle2_Click"/>
+                <Button Content="Стиль 3" Style="{StaticResource UIStyleButtonStyle}" Click="ApplyStyle3_Click"/>
+                <Button Content="Сброс" Style="{StaticResource UIStyleButtonStyle}" Click="ResetStyle_Click"/>
+            </StackPanel>
 
             <!-- Основная сетка -->
             <Grid>
@@ -61,14 +114,13 @@
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center"
                             Grid.Row="2">
-                    <Button Content="● Точка" Width="100" Margin="5" Click="DrawPoint_Click"/>
-                    <Button Content="[] Квадрат" Width="100" Margin="5" Click="Draw_CUB"/>
-                    <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click"/>
-                    <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART"/>
-                    <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT"/>
-                    <Button Content="Очистить" Width="100" Margin="5" Click="ClearCanvas_Click"/>   
-                    <Button Content="Новый рисунок" Width="100" Margin="5" Click="DrawNewArt_Click"/>
-
+                    <Button Content="● Точка" Width="100" Margin="5" Click="DrawPoint_Click" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Content="[] Квадрат" Width="100" Margin="5" Click="Draw_CUB" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Content="▲ Треугольник" Width="100" Margin="5" Click="DrawTriangle_Click" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Content=" Мой рисунок " Width="100" Margin="5" Click="Draw_MyART" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Content=" Мой Фрактал " Width="100" Margin="5" Click="Draw_FRAT" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Content="Очистить" Width="100" Margin="5" Click="ClearCanvas_Click" Style="{StaticResource CustomButtonStyle}"/>   
+                    <Button Content="Новый рисунок" Width="100" Margin="5" Click="DrawNewArt_Click" Style="{StaticResource CustomButtonStyle}"/>
                 </StackPanel>
             </Grid>
         </DockPanel>

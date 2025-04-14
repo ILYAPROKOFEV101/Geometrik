@@ -6,6 +6,7 @@ using System.Windows.Shapes;
 using WPF_Geometric;
 
 using System;
+using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Media;
@@ -263,6 +264,235 @@ namespace WpfApplication2
                 (byte)_random.Next(0, 255),
                 (byte)_random.Next(0, 255),
                 (byte)_random.Next(0, 255));
+        }
+         // Метод для применения Стиля 1 (розовая тема)
+         private void ApplyStyle1_Click(object sender, RoutedEventArgs e)
+         {
+             // Устанавливаем фон окна в розовый цвет (#FFC0CB - классический розовый)
+             this.Background = new SolidColorBrush(Color.FromRgb(255, 192, 203)); // #FFC0CB
+
+             // Цвет текста и шрифтов
+             Brush textColor = Brushes.White;
+
+             // Изменяем стиль текстовых элементов
+             foreach (var child in FindVisualChildren<TextBlock>(this))
+             {
+                 child.Foreground = textColor;
+                 child.FontSize = 16; // Размер шрифта
+                 child.FontWeight = FontWeights.Bold; // Жирный шрифт
+             }
+
+             // Изменяем стиль кнопок
+             foreach (var child in FindVisualChildren<Button>(this))
+             {
+                 child.Foreground = Brushes.White; // Белый текст
+                 child.Background = new SolidColorBrush(Color.FromRgb(255, 105, 180)); // Глубокий розовый (#FF69B4)
+                 child.BorderBrush = Brushes.Transparent; // Убираем границы
+                 child.FontSize = 16; // Размер шрифта
+                 child.FontWeight = FontWeights.Bold; // Жирный шрифт
+                 child.Padding = new Thickness(10, 5, 10, 5); // Отступы
+                 child.BorderThickness = new Thickness(0); // Убираем границы
+             }
+
+             // Изменяем стиль текстовых полей
+             foreach (var child in FindVisualChildren<TextBox>(this))
+             {
+                 child.Foreground = textColor;
+                 child.Background = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255)); // Полупрозрачный белый фон
+                 child.FontSize = 16; // Размер шрифта
+                 child.FontWeight = FontWeights.Bold; // Жирный шрифт
+                 child.BorderBrush = Brushes.Transparent; // Убираем границы
+                 child.BorderThickness = new Thickness(0);
+                 child.Padding = new Thickness(5); // Добавляем внутренние отступы
+             }
+
+             // Изменяем фон области для рисования
+             DrawingCanvas.Background = new SolidColorBrush(Color.FromRgb(255, 182, 193)); // Светло-розовый (#FFB6C1)
+         }
+
+        // Метод для применения Стиля 2 (полностью черно-белый стиль)
+        private void ApplyStyle2_Click(object sender, RoutedEventArgs e)
+        {
+            // Устанавливаем фон окна в черный цвет
+            this.Background = Brushes.Black;
+
+            // Цвет текста и шрифтов
+            Brush textColor = Brushes.White;
+
+            // Изменяем стиль текстовых элементов
+            foreach (var child in FindVisualChildren<TextBlock>(this))
+            {
+                child.Foreground = textColor;
+                child.FontSize = 14; // Размер шрифта
+                child.FontWeight = FontWeights.Normal; // Нормальный вес шрифта
+            }
+
+            // Изменяем стиль кнопок
+            foreach (var child in FindVisualChildren<Button>(this))
+            {
+                child.Foreground = Brushes.White; // Белый текст
+                child.Background = Brushes.Black; // Черный фон
+                child.BorderBrush = Brushes.White; // Белая граница
+                child.FontSize = 14; // Размер шрифта
+                child.FontWeight = FontWeights.Bold; // Жирный шрифт
+                child.Padding = new Thickness(10, 5, 10, 5); // Отступы
+                child.BorderThickness = new Thickness(2); // Толщина границы
+            }
+
+            // Изменяем стиль текстовых полей
+            foreach (var child in FindVisualChildren<TextBox>(this))
+            {
+                child.Foreground = textColor;
+                child.Background = Brushes.Black; // Черный фон
+                child.FontSize = 14; // Размер шрифта
+                child.FontWeight = FontWeights.Normal; // Нормальный вес шрифта
+                child.BorderBrush = Brushes.White; // Белая граница
+                child.BorderThickness = new Thickness(2); // Толщина границы
+                child.Padding = new Thickness(5); // Отступы
+            }
+
+            // Изменяем фон области для рисования
+            DrawingCanvas.Background = Brushes.Black; // Черный фон для области рисования
+        }
+
+        
+        // Метод для применения Стиля 3 (Material Design 3 - голубая тема)
+        private void ApplyStyle3_Click(object sender, RoutedEventArgs e)
+        {
+            // Цвет фона окна
+            this.Background = new SolidColorBrush(Color.FromRgb(13, 71, 161)); // #0D47A1
+
+            // Цвет текста и шрифтов
+            Brush textColor = Brushes.White;
+
+            // Изменяем стиль текстовых элементов
+            foreach (var child in FindVisualChildren<TextBlock>(this))
+            {
+                child.Foreground = textColor;
+                child.FontSize = 16;
+                child.FontWeight = FontWeights.Bold;
+            }
+
+            // Изменяем стиль кнопок
+            foreach (var child in FindVisualChildren<Button>(this))
+            {
+                child.Foreground = Brushes.White; // Белый текст
+                child.Background = new SolidColorBrush(Color.FromRgb(187, 222, 251)); // #BBDEFB (светлый голубой)
+                child.BorderBrush = Brushes.Transparent; // Убираем границы
+                child.FontSize = 16;
+                child.FontWeight = FontWeights.Bold;
+                child.Padding = new Thickness(10, 5, 10, 5); // Добавляем внутренние отступы
+                child.BorderThickness = new Thickness(0); // Убираем границы
+            }
+
+            // Изменяем стиль текстовых полей
+            foreach (var child in FindVisualChildren<TextBox>(this))
+            {
+                child.Foreground = textColor;
+                child.Background = new SolidColorBrush(Color.FromArgb(128, 255, 255, 255)); // Полупрозрачный белый фон
+                child.FontSize = 16;
+                child.FontWeight = FontWeights.Bold;
+                child.BorderBrush = Brushes.Transparent; // Убираем границы
+                child.BorderThickness = new Thickness(0);
+                child.Padding = new Thickness(5); // Добавляем внутренние отступы
+            }
+            DrawingCanvas.Background = Brushes.Blue; // Черный фон для области рисования
+
+        }
+
+        // Метод для сброса стиля к значениям по умолчанию
+        private void ResetStyle_Click(object sender, RoutedEventArgs e)
+        {
+            // Возвращаем фон окна к белому цвету
+            this.Background = Brushes.White;
+
+            // Цвет текста и шрифтов
+            Brush textColor = Brushes.Black;
+
+            // Изменяем стиль текстовых элементов
+            foreach (var child in FindVisualChildren<TextBlock>(this))
+            {
+                child.Foreground = textColor;
+                child.FontSize = 14; // Размер шрифта по умолчанию
+                child.FontWeight = FontWeights.Normal; // Нормальный вес шрифта
+            }
+
+            // Изменяем стиль кнопок
+            foreach (var child in FindVisualChildren<Button>(this))
+            {
+                child.Foreground = Brushes.Black; // Черный текст
+                child.Background = Brushes.LightGray; // Светло-серый фон
+                child.BorderBrush = Brushes.DarkGray; // Темно-серая граница
+                child.FontSize = 14; // Размер шрифта по умолчанию
+                child.FontWeight = FontWeights.Normal; // Нормальный вес шрифта
+                child.Padding = new Thickness(10, 5, 10, 5); // Отступы
+                child.BorderThickness = new Thickness(2); // Толщина границы
+            }
+
+            // Изменяем стиль текстовых полей
+            foreach (var child in FindVisualChildren<TextBox>(this))
+            {
+                child.Foreground = textColor;
+                child.Background = Brushes.White; // Белый фон
+                child.FontSize = 14; // Размер шрифта по умолчанию
+                child.FontWeight = FontWeights.Normal; // Нормальный вес шрифта
+                child.BorderBrush = Brushes.DarkGray; // Темно-серая граница
+                child.BorderThickness = new Thickness(2); // Толщина границы
+                child.Padding = new Thickness(5); // Отступы
+            }
+            DrawingCanvas.Background = Brushes.White; // Черный фон для области рисования
+
+        }
+        // Вспомогательный метод для изменения стиля UI
+        private void ApplyUIStyle(Brush backgroundBrush, Brush textBrush, int fontSize, FontWeight fontWeight)
+        {
+            // Изменяем фон окна
+            this.Background = backgroundBrush;
+
+            // Изменяем стиль текстовых элементов
+            foreach (var child in FindVisualChildren<TextBlock>(this))
+            {
+                child.Foreground = textBrush;
+                child.FontSize = fontSize;
+                child.FontWeight = fontWeight;
+            }
+
+            // Изменяем стиль кнопок
+            foreach (var child in FindVisualChildren<Button>(this))
+            {
+                child.Foreground = textBrush;
+                child.FontSize = fontSize;
+                child.FontWeight = fontWeight;
+            }
+
+            // Изменяем стиль текстовых полей
+            foreach (var child in FindVisualChildren<TextBox>(this))
+            {
+                child.Foreground = textBrush;
+                child.FontSize = fontSize;
+                child.FontWeight = fontWeight;
+            }
+        }
+
+        // Метод для поиска всех дочерних элементов определенного типа
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child is T t)
+                    {
+                        yield return t;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
         }
     }
 }
